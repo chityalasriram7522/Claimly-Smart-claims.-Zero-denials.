@@ -15,6 +15,8 @@ import api from "../services/api";
 import { formatCurrency, getRiskBadgeColor, getStatusBadgeColor } from "../utils/formatters";
 import { useAuth } from "../context/AuthContext";
 
+import mockDashboard from "../data/mockDashboard.json";
+
 const DashboardPage = ({ onNavigateTab, onSelectClaim }) => {
   const { user } = useAuth();
   const [data, setData] = useState(null);
@@ -27,7 +29,8 @@ const DashboardPage = ({ onNavigateTab, onSelectClaim }) => {
       const res = await api.get("/dashboard");
       setData(res.data);
     } catch (err) {
-      console.error("Failed to load dashboard:", err);
+      console.warn("Backend offline or unreachable, using offline demo dashboard data.");
+      setData(mockDashboard);
     } finally {
       setLoading(false);
     }
